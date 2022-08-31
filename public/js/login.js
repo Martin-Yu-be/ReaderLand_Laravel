@@ -76,6 +76,7 @@ submitBtn.addEventListener('click', async (event) => {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'Application/json',
+                        'Accept': 'Application/json'
                     },
                     body: JSON.stringify(body),
                 });
@@ -87,7 +88,9 @@ submitBtn.addEventListener('click', async (event) => {
                         user: { name },
                     } = res.data;
                     localStorage.setItem('ReaderLandToken', accessToken);
+
                     await toastBaker({ icon: 'success', title: '登入成功', text: `${name}, 歡迎回到ReaderLand!`, timer: 2000 });
+                    
                     window.location.href = '/index.html';
                 } else if (res.status == 400) {
                     // Unvalidated email
