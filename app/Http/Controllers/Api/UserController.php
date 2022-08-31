@@ -13,11 +13,21 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function store(StoreUserRequest $request){
-        $formFields = $request->all();
-        $formFields['id'] = fake()->uuid();
+    public function me(){
+        $user = auth()->user();
 
-        User::create($formFields);
-        return $formFields;
+        if($user){
+            return response()->json([
+                'data'=> [
+                    'user'=> $user,
+                ]
+            ]);
+        } else {
+            return response()->json([
+                'data' => [
+                    'user'=> 'visitor'
+                ],
+            ]);
+        }
     }
 }
