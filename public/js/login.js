@@ -72,7 +72,7 @@ submitBtn.addEventListener('click', async (event) => {
             showLoadingHint('sign-in');
 
             try {
-                res = await fetch('/api/user/signin', {
+                res = await fetch('/api/auth/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'Application/json',
@@ -118,30 +118,42 @@ submitBtn.addEventListener('click', async (event) => {
             showLoadingHint('sign-up');
 
             try {
-                res = await fetch('/api/user/signup', {
+                res = await fetch('/api/auth/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'Application/json',
+                        'Accept': 'application/json'
                     },
                     body: JSON.stringify(body),
                 });
-
+                
+                
                 if (res.status == 200) {
                     res = await res.json();
+                    console.log(res);
 
                     const {
                         user: { name },
                     } = res.data;
 
+                    
                     await toastBaker({ icon: 'success', title: '註冊成功', text: `您好 ${name}, 請先至您的信箱點擊驗證連結完成註冊流程歐😀`, timer: 4000 });
 
                     window.location.href = '/login.html';
-                } else if (res.status == 400) {
-                    await toastBaker({ icon: 'error', text: '✉ 信箱格式不符。' });
-                } else if (res.status == 403) {
-                    await toastBaker({ icon: 'error', text: '✉ 此信箱已註冊。' });
-                } else {
-                    await toastBaker({ icon: 'error', text: '系統異常，請稍後再試😫。' });
+                } else{
+                    // Register Error Message
+                    res = await res.json();
+
+                    switch(res.message){
+                        case 'The email has already been taken.':
+                            await toastBaker({ icon: 'error', text: '✉ 此信箱已註冊。' });
+                            break;
+                        case 'The email must be a valid email address.':
+                            await toastBaker({ icon: 'error', text: '✉ 信箱格式不符。' });
+                            break;
+                        default:
+                            await toastBaker({ icon: 'error', text: '系統異常，請稍後再試😫。' });
+                    }
                 }
             } catch (error) {
                 console.error(error);

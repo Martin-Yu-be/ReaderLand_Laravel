@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -30,6 +32,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        
         return response()->json([
             'status' => 'success',
             'user' => $user,
@@ -48,6 +51,8 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
+        $formFields['password'] = bcrypt($formFields['password']);
+        
         $user = User::create([
             ...$formFields, 
             'id' => fake()->uuid(),   
@@ -56,13 +61,15 @@ class AuthController extends Controller
         $token = Auth::login($user);
         
         return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorization' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ],
+            'data' => [
+                'status' => 'success',
+                'message' => 'User created successfully',
+                'user' => $user,
+                'authorization' => [
+                    'token' => $token,
+                    'type' => 'bearer',
+                ],
+            ]
         ]);
     }
 
