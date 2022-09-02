@@ -6,6 +6,8 @@ use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -41,21 +43,11 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
+    public function register(StoreUserRequest $request)
     {
-        $formFields = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
-        $formFields['password'] = bcrypt($formFields['password']);
+        $formFields = $request->all();
+        $user = UserService::createOne(...$formFields);
         
-        $user = User::create([
-            ...$formFields, 
-            'id' => fake()->uuid(),   
-        ]);
-
         $token = Auth::login($user);
         
         return response()->json([
