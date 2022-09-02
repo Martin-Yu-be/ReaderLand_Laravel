@@ -6,6 +6,7 @@ use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AuthUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
@@ -17,16 +18,10 @@ class AuthController extends Controller
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
     }
 
-    public function login(Request $request)
+    public function login(AuthUserRequest $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string'
-        ]);
+        $token = Auth::attempt($request->all());
 
-        $credentials = $request->only('email', 'password');
-
-        $token = Auth::attempt($credentials);
         if(!$token){
             return response()->json([
                 'message' => 'Unauthorized',
@@ -62,27 +57,4 @@ class AuthController extends Controller
             ]
         ]);
     }
-
-    public function logout()
-    {
-        Auth::logout();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully logged out',
-        ]);
-    } 
-
-
-    public function refresh()
-    {
-        return response()->json([
-            'status' => 'success',
-            'user' => Auth::user(),
-            'authorization' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ],
-        ]);
-    }
-
 }
