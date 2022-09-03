@@ -16,7 +16,6 @@ class UserService
             'email' => $email,
             'password' => bcrypt($password),
             'id' => fake()->uuid(), 
-            'created_at' => now()
         ]);
     }
 }
