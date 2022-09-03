@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use Exception;
-use App\Models\User;
-use Illuminate\Http\Request;
+use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthUserRequest;
 use App\Http\Requests\StoreUserRequest;
-use App\Services\UserService;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-
     public function login(AuthUserRequest $request)
     {
         $token = Auth::attempt($request->all());
-
         if(!$token){
             return response()->json([
                 'message' => 'Unauthorized',
@@ -36,7 +31,7 @@ class AuthController extends Controller
 
     public function register(StoreUserRequest $request)
     {
-        $formFields = $request->all();
+        $formFields = $request->except('password_confirmation');
         $user = UserService::createOne(...$formFields);
         
         $token = Auth::login($user);
