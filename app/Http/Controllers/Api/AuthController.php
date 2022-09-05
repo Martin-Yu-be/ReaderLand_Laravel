@@ -6,6 +6,7 @@ use App\Services\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthUserRequest;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -24,7 +25,7 @@ class AuthController extends Controller
         
         return response()->json([
             'data' => [
-                'user' => $user,
+                'user' => new UserResource($user),
                 'accessToken' => $token,    
             ]
         ]);
@@ -43,7 +44,7 @@ class AuthController extends Controller
             'data' => [
                 'status' => 'success',
                 'message' => 'User created successfully',
-                'user' => $user,
+                'user' => new UserResource($user),
                 'authorization' => [
                     'token' => $token,
                     'type' => 'bearer',
