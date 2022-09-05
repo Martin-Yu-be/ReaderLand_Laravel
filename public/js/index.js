@@ -345,8 +345,9 @@ async function renderCategories(auth) {
                 await toastBaker({ icon: 'error', text: '主題列表載入失敗' });
                 return;
             }
-            result = data;
         }
+
+        result = result.map(elem => elem['category']);
 
         const categories = {};
         result.forEach((cat) => {

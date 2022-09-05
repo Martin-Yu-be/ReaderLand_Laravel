@@ -82,7 +82,7 @@ const getUserSubscription = async (userToken) => {
 };
 
 const getCategoriesAPI = async () => {
-    return fetchHandler('/api/articles/categories');
+    return fetchHandler('/api/categories');
 };
 
 const unFavoriteArticleAPI = (userToken, articleId) => {
