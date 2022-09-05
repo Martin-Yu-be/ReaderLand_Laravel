@@ -31,10 +31,10 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(StoreUserRequest $request)
+    public function register(StoreUserRequest $request, UserService $service)
     {
         $formFields = $request->validated();
-        $user = UserService::createOne(...$formFields);
+        $user = $service->createOne(...$formFields);
         
         
         $token = Auth::login($user);
