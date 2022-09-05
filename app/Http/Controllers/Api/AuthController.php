@@ -12,7 +12,8 @@ class AuthController extends Controller
 {
     public function login(AuthUserRequest $request)
     {
-        $token = Auth::attempt($request->all());
+        $token = Auth::attempt($request->validated());
+        
         if(!$token){
             return response()->json([
                 'message' => 'Unauthorized',
@@ -31,10 +32,12 @@ class AuthController extends Controller
 
     public function register(StoreUserRequest $request)
     {
-        $formFields = $request->except('password_confirmation');
+        $formFields = $request->validated();
         $user = UserService::createOne(...$formFields);
         
+        
         $token = Auth::login($user);
+        
         
         return response()->json([
             'data' => [

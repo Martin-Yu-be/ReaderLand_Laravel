@@ -15,7 +15,7 @@ class UserService
             'name' => $name,
             'email' => $email,
             'password' => bcrypt($password),
-            'id' => fake()->uuid(), 
+            'id' => (string) fake()->uuid(), 
         ]);
     }
 }
