@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\CategoryController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ArticleController;
+use App\Http\Controllers\Api\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,7 +30,10 @@ Route::middleware(['ForceJson'])->group(function(){
     });
 
     Route::apiResource('categories', CategoryController::class)
-        ->only(['index']);
+        ->only('index');
+
+    Route::apiResource('articles', ArticleController::class)
+        ->only('index');
 });
 
 
