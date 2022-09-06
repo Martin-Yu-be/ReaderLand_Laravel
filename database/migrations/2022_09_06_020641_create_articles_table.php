@@ -14,27 +14,22 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::enableForeignKeyConstraints();
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
-            // user_id
-            // $table->foreignIdFor(User::class)
-            //       ->constrained()
-            //       ->cascadeOnUpdate()
-            //       ->cascadeOnDelete();
-            $table->foreignId('user_id')
-                    ->nullable()
-                    ->constrained('users')
-                    ->cascadeOnUpdate()
-                    ->nullOnDelete();
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
 
             $table->string('title');
             $table->json('context');
             $table->string('head');
             $table->string('preview');
-            $table->integer('read_counts')->unsigned();
-            $table->integer('comment_counts')->unsigned();
+            $table->integer('read_counts')->unsigned()->default(0);
+            $table->integer('like_counts')->unsigned()->default(0);
+            $table->integer('comment_counts')->unsigned()->default(0);
             $table->timestamps();
+
+            $table->index('user_id');
         });
     }
 
