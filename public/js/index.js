@@ -371,10 +371,10 @@ async function renderSwitchCategorySelection() {
     const selection = document.getElementById('category-select');
     const categorySpan = document.querySelector('#category-display span');
 
-    categories.forEach((cat) => {
+    categories.forEach(({category:cat, id}) => {
         const catOption = document.createElement('div');
         catOption.innerText = cat;
-        catOption.value = cat;
+        catOption.dataset.id = id;
         catOption.classList.add('category-option');
         selection.append(catOption);
     });
