@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email', 50)->unique();
             $table->string('password', 60);
             $table->text('bio')->nullable();
-            $table->string('picture', 60)->default('avatar');
+            $table->string('picture', 60)->default('default_'.random_int(0, 8).'jpg');
             $table->timestamps();
         });
     }
