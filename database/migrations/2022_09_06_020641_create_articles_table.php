@@ -14,6 +14,7 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::enableForeignKeyConstraints();
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             // user_id

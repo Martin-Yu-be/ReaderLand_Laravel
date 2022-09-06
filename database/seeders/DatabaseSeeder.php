@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(5)->create();
 
+
+        // Generate Categories
         $categories = [
             '政治與評論',
             '國際時事',
