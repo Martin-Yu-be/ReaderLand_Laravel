@@ -18,7 +18,7 @@ class UserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'avatar' => "http://localhost:8000/images/avatars/$this->picture.png",
+            'avatar' => env('S3_URL').'/avatar/'.$this->picture,
             'updated_at' => $this->updated_at,
             'created_at' => $this->created_at,
         ];
