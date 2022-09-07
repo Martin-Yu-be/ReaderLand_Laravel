@@ -26,7 +26,7 @@ class ArticleService{
         $articles = DB::table('articles as a')
                         ->join('users as u', 'u.id', 'a.user_id')
                         ->where('a.id', '<', $lastId)
-                        ->orderBy('a.id', 'DESC')
+                        ->orderByDESC('a.id')
                         ->select(self::$articlesFields)
                         ->limit(20)
                         ->get();
