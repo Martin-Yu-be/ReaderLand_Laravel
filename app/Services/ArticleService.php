@@ -41,17 +41,22 @@ class ArticleService{
     }
 
     public function getCategoryArticles(string $category, int $lastId){ 
-        $categoryModel = Category::where('category', $category)->first();
-
-        $articlesId = $categoryModel->articles()
-                                    ->where('article_id', '<', $lastId)
-                                    ->take(20)
-                                    ->pluck('article_id');
-
+        
         $articles = DB::table('articles as a')
-                            ->whereIn('a.id', $articlesId)
+                            ->whereIn('a.id', function($query) use($category, $lastId){
+                                $query->select('article_id')
+                                    ->from('article_category')
+                                    ->where('category_id', '=', function($query) use($category){
+                                        $query->select('id')
+                                                ->from('categories')
+                                                ->where('category', $category);
+                                    })
+                                    ->where('article_id', '<', $lastId)
+                                    ->orderBy('article_id');
+                            })
                             ->join('users as u', 'u.id', 'a.user_id')
-                            ->orderBy('a.id', 'DESC')
+                            ->orderByDesc('a.id')
+                            ->limit(20)
                             ->select(self::$articlesFields)
                             ->get();
 
