@@ -23,6 +23,11 @@ class Article extends Model
 
     public function categories(): BelongsToMany 
     {
-        return $this->belongsToMany(\App\Models\Category::class);
+        return $this->belongsToMany(
+            \App\Models\Category::class,
+            // 'article_category',
+            // 'article_id',
+            // 'category_id',
+        );
     }
 }

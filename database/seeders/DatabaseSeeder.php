@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
 
 
         //TODO: Decode json data
-        $json = file_get_contents(__DIR__.'//testcase.json');
+        $json = file_get_contents(__DIR__.'/testcase.json');
         ["authors" => $authors, 'articles' => $articles] = json_decode($json, true);
 
         

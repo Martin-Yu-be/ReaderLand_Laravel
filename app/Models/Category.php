@@ -14,6 +14,11 @@ class Category extends Model
 
     public function articles(): BelongsToMany 
     {
-        return $this->belongsToMany(\App\Models\Article::class);
+        return $this->belongsToMany(
+            \App\Models\Article::class,
+            'article_category',
+            'category_id',
+            'article_id', 
+        );
     }
 }

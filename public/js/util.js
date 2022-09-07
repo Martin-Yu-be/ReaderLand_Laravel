@@ -54,12 +54,12 @@ const getNewsfeedAPI = async (userToken, { refresh, lastArticleIdForNewsfeed, ca
 
 const getLatestArticles = async (userToken, query) => {
     if (token) {
-        return fetchHandler(`/api/articles/latest${query}`, {
+        return fetchHandler(`/api/articles${query}`, {
             method: 'GET',
             headers: { Authorization: `Bearer ${userToken}` },
         });
     } else {
-        return fetchHandler(`/api/articles/latest${query}`);
+        return fetchHandler(`/api/articles${query}`);
     }
 };
 

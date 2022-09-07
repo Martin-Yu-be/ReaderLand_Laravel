@@ -39,8 +39,8 @@ function appendArticle({ article, auth, container }) {
         favorited,
         liked,
         commented,
-        author: { followed, _id: authorId, picture, name, bio },
-        _id: articleId,
+        author: { followed, userId: authorId, picture, name, bio },
+        articleId: articleId,
         createdAt,
         title,
         readCount,
@@ -48,7 +48,7 @@ function appendArticle({ article, auth, container }) {
         commentCount,
     } = article;
 
-    const categoryHTML = article.category.map((elem) => `<span class="category">${elem}</span>`).join(' ');
+    const categoryHTML = article.categories.map((elem) => `<span class="category">${elem}</span>`).join(' ');
     const articleElem = document.createElement('article');
     articleElem.classList.add('article');
     articleElem.dataset.id = articleId;
@@ -265,8 +265,8 @@ async function renderArticles(auth, refresh = false) {
             return { end: '' };
         }
 
-        articles = data.latest;
-        end = data.EndOfFeed;
+        articles = data.articles;
+        end = data.endOfFeed;
     } else {
         //Category fetch
         let query = `?category=${renderType}`;
@@ -294,6 +294,8 @@ async function renderArticles(auth, refresh = false) {
     for (let article of articles) {
         appendArticle({ article, auth, container });
     }
+
+    loadigng[`${renderType}Loading`] = false;
 
     return { end };
 }
@@ -415,7 +417,7 @@ async function renderSwitchCategorySelection() {
             loadingIcon.style.display = 'inline-block';
             //TODO: loading articles
             const { end } = await renderArticles(auth);
-            if (end.toString()) {
+            if (end) {
                 renderEndDiv(targetType, end);
             }
             window.scroll({ top: 0 });
@@ -467,11 +469,12 @@ async function init() {
     }
 
     const { end } = await renderArticles(auth);
-    if (end.toString()) {
+
+    if (end) {
         renderEndDiv(type, end);
     }
 
-    await renderHotArticles();
+    // await renderHotArticles();
 
     //TODO: Load more feed when scroll to btm
     $(window).scroll(async function () {
@@ -481,10 +484,10 @@ async function init() {
             if (loadigng[`${type}Loading`]) {
                 return;
             }
-
             loadigng[`${type}Loading`] = true;
+            
             const { end } = await renderArticles(auth, false);
-            if (end.toString()) {
+            if (end) {
                 renderEndDiv(type, end);
             }
         }
