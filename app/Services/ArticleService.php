@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Article;
-use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 
 class ArticleService{
