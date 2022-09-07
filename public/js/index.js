@@ -259,6 +259,7 @@ async function renderArticles(auth, refresh = false) {
         }
         const { data, error } = await getLatestArticles(token, query);
 
+
         if (error) {
             await toastBaker({ icon: 'error', text: '系統異常，無法載入最新文章，請稍後再試' });
             console.error(error);
@@ -273,9 +274,10 @@ async function renderArticles(auth, refresh = false) {
         if (!refresh && container.lastElementChild) {
             query += `&lastArticleId=${container.lastElementChild.dataset.id}`;
         }
+
         //TODO: render category
         const {
-            data: { categoryArticles, EndOfFeed },
+            data: { articles: categoryArticles, endOfFeed },
             error,
         } = await getCategoryArticleAPI(token, query);
 
@@ -286,7 +288,7 @@ async function renderArticles(auth, refresh = false) {
         }
 
         articles = categoryArticles;
-        end = EndOfFeed;
+        end = endOfFeed;
     }
 
     loadingIcon.style.display = 'none';
