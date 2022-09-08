@@ -8,9 +8,53 @@ use App\Http\Requests\AuthUserRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
+use OpenApi\Attributes as OA;
 
+#[OA\Info(
+    title: 'Auth',
+    description: 'api for user register and user login',
+    version: '1.0'
+)]
 class AuthController extends Controller
 {
+    #[OA\Post(
+        path: '/api/auth/login',
+        tags: ['login'],
+        summary: 'user sign in',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: [
+                new OA\MediaType(
+                    mediaType: 'application/json',
+                    schema: new OA\Schema(ref: '#/components/schemas/SignInRequest')
+                ),
+            ],
+
+        ),
+        responses: [ 
+                new OA\Response(
+                    response: 201, 
+                    description:'success',
+                    content: [
+                        new OA\MediaType(
+                            mediaType: 'application/json',
+                            schema: new OA\Schema(
+                                properties: [
+                                    new OA\Property(
+                                        property: 'data',
+                                        type: 'object',
+                                        properties: [
+                                            new OA\Property(property: 'accessToken', description: 'token', type: 'string', example: 'session-token'),
+                                            new OA\Property(property: 'user', type: 'object', ref: "#/components/schemas/UserResource"),
+                                        ]
+                                    ), 
+                                ]
+                            ),
+                        ),
+                    ],
+                ),
+        ]
+    )]
     public function login(AuthUserRequest $request)
     {
         $token = Auth::attempt($request->validated());
