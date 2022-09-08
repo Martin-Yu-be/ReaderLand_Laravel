@@ -31,7 +31,6 @@ class ArticleController extends Controller
         return response()->json(
             [ "data" => [
                 'articles' => new ArticleCollection($articles),
-                // 'articles' => $articles,
                 'endOfFeed' => count($articles) < 20,
         ]]);
     }

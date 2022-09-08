@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\Article;
-use Illuminate\Support\Facades\DB;
 
 class ArticleService{
 
@@ -30,32 +29,23 @@ class ArticleService{
 
     }
 
-    public function getCategoryArticles(string $category, int $lastId){ 
-        
-        $articles = DB::table('articles as a')
-                            ->whereIn('a.id', function($query) use($category, $lastId){
+    public function getCategoryArticles(string $category, int $lastArticleId){ 
+
+        return Article::select(self::$articlesFields)
+                            ->whereIn('id', function($query) use($category){
                                 $query->select('article_id')
-                                    ->from('article_category')
-                                    ->where('category_id', '=', function($query) use($category){
-                                        $query->select('id')
+                                        ->from('article_category')
+                                        ->where('category_id', function($query) use($category){
+                                            $query->select('id')
                                                 ->from('categories')
                                                 ->where('category', $category);
-                                    })
-                                    ->where('article_id', '<', $lastId)
-                                    ->orderBy('article_id');
+                                       });         
                             })
-                            ->join('users as u', 'u.id', 'a.user_id')
-                            ->orderByDesc('a.id')
+                            ->where('id', '<', $lastArticleId)
+                            ->with('user')
+                            ->with('categories')
+                            ->orderByDESC('id')
                             ->limit(20)
-                            ->select(self::$articlesFields)
                             ->get();
-
-
-        // TODO: fetch articles' category
-        $articles->each(function($article){
-            $article->categories = Article::find($article->id)->categories()->pluck('category');
-        });
-
-        return $articles;
     }
 } 
