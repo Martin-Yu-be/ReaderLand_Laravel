@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Article;
-use Illuminate\Http\Request;
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetArticlesRequest;
 use App\Http\Resources\ArticleCollection;
+use App\Http\Resources\ArticleResource;
 
 class ArticleController extends Controller
 {
@@ -30,7 +29,7 @@ class ArticleController extends Controller
 
         return response()->json(
             [ "data" => [
-                'articles' => new ArticleCollection($articles),
+                'articles' => ArticleResource::collection($articles),
                 'endOfFeed' => count($articles) < 20,
         ]]);
     }
