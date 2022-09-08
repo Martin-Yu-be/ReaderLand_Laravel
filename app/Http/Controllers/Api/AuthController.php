@@ -75,6 +75,7 @@ class AuthController extends Controller
         ]);
     }
 
+    
     public function register(StoreUserRequest $request, UserService $service)
     {
         $formFields = $request->validated();
