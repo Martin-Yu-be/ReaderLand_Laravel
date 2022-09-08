@@ -6,6 +6,7 @@ use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\GetArticlesRequest;
 use App\Http\Resources\ArticleCollection;
 
 class ArticleController extends Controller
@@ -15,14 +16,14 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request, ArticleService $service)
+    public function index(GetArticlesRequest $request, ArticleService $service)
     {
-        // TODO: latest, categories
-        $category = $request->query('category');
-        $lastArticleId = $request->query('lastArticleId') ?? PHP_INT_MAX;
+        // TODO: query params: lastArticleId, category
+        $validatedFields = $request->validated();
+        $lastArticleId = isset($validatedFields['lastArticleId']) ? $validatedFields['lastArticleId'] : PHP_INT_MAX;
 
-        if($category){
-            $articles = $service->getCategoryArticles($category, $lastArticleId);
+        if(isset($validatedFields['category'])){
+            $articles = $service->getCategoryArticles($validatedFields['category'], $lastArticleId ?? PHP_INT_MAX);
         } else {
             $articles = $service->getLatestArticles($lastArticleId);
         }
