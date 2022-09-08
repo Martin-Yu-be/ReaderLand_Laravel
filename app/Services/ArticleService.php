@@ -8,35 +8,26 @@ use Illuminate\Support\Facades\DB;
 class ArticleService{
 
     private static $articlesFields = [
-        'a.id',
-        'a.created_at',
-        'a.title',
-        'a.preview',
-        'a.read_counts',
-        'a.like_counts',
-        'a.comment_counts',
-        'u.name',
-        'u.bio',
-        'u.picture',
-        'u.id as userId',
+        'id',
+        'user_id', 
+        'created_at', 
+        'title', 
+        'preview', 
+        'read_counts', 
+        'like_counts', 
+        'comment_counts'
     ];
 
-    public function getLatestArticles(int $lastId){
+    public function getLatestArticles(int $lastArticleId){
 
-        $articles = DB::table('articles as a')
-                        ->join('users as u', 'u.id', 'a.user_id')
-                        ->where('a.id', '<', $lastId)
-                        ->orderByDESC('a.id')
-                        ->select(self::$articlesFields)
-                        ->limit(20)
-                        ->get();
-        
-        // TODO: fetch articles' category
-        $articles->each(function($article){
-            $article->categories = Article::find($article->id)->categories()->pluck('category');
-        });
+        return Article::select(self::$articlesFields)
+                                ->where('id', '<', $lastArticleId)
+                                ->with('user')
+                                ->with('categories')
+                                ->orderByDESC('id')
+                                ->limit(20)
+                                ->get();
 
-        return $articles;
     }
 
     public function getCategoryArticles(string $category, int $lastId){ 

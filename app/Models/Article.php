@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,22 +11,17 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $guarded = [
-        'id',
-    ];
+    protected $guarded = ['id'];
+
+    protected $hidden = ['pivot'];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);        
+        return $this->belongsTo(\App\Models\User::class)->select(['name','id', 'bio', 'picture']);        
     }
 
     public function categories(): BelongsToMany 
     {
-        return $this->belongsToMany(
-            \App\Models\Category::class,
-            // 'article_category',
-            // 'article_id',
-            // 'category_id',
-        );
+        return $this->belongsToMany(\App\Models\Category::class)->select('category');
     }
 }
