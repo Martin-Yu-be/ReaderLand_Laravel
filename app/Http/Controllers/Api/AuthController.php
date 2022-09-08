@@ -19,7 +19,7 @@ class AuthController extends Controller
 {
     #[OA\Post(
         path: '/api/auth/login',
-        tags: ['login'],
+        tags: ['auth'],
         summary: 'user sign in',
         requestBody: new OA\RequestBody(
             required: true,
@@ -75,7 +75,44 @@ class AuthController extends Controller
         ]);
     }
 
-    
+    #[OA\Post(
+        path: '/api/auth/register',
+        tags: ['auth'],
+        summary: 'user register',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: [
+                new OA\MediaType(
+                    mediaType: 'application/json',
+                    schema: new OA\Schema(ref: '#/components/schemas/StoreUserRequest')
+                ),
+            ],
+
+        ),
+        responses: [ 
+            new OA\Response(
+                response: 201, 
+                description:'success',
+                content: [
+                    new OA\MediaType(
+                        mediaType: 'application/json',
+                        schema: new OA\Schema(
+                            properties: [
+                                new OA\Property(
+                                    property: 'data',
+                                    type: 'object',
+                                    properties: [
+                                        new OA\Property(property: 'user', type: 'object', ref: "#/components/schemas/UserResource"),
+                                        new OA\Property(property: 'token', type: 'string', description: 'JWT token'),
+                                    ],
+                                )
+                            ]
+                        ), 
+                    ),
+                ],
+            ),
+        ],
+    )]
     public function register(StoreUserRequest $request, UserService $service)
     {
         $formFields = $request->validated();
@@ -87,13 +124,8 @@ class AuthController extends Controller
         
         return response()->json([
             'data' => [
-                'status' => 'success',
-                'message' => 'User created successfully',
                 'user' => new UserResource($user),
-                'authorization' => [
-                    'token' => $token,
-                    'type' => 'bearer',
-                ],
+                'token' => $token,
             ]
         ]);
     }
