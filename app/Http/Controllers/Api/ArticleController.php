@@ -27,10 +27,8 @@ class ArticleController extends Controller
             $articles = $service->getLatestArticles($lastArticleId);
         }
 
-        return response()->json(
-            [ "data" => [
-                'articles' => ArticleResource::collection($articles),
-                'endOfFeed' => count($articles) < 20,
-        ]]);
+        return ArticleResource::collection($articles)
+                ->response()
+                ->setStatusCode(200);
     }
 }

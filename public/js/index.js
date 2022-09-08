@@ -259,15 +259,14 @@ async function renderArticles(auth, refresh = false) {
         }
         const { data, error } = await getLatestArticles(token, query);
 
-
         if (error) {
             await toastBaker({ icon: 'error', text: '系統異常，無法載入最新文章，請稍後再試' });
             console.error(error);
             return { end: '' };
         }
 
-        articles = data.articles;
-        end = data.endOfFeed;
+        articles = data;
+        end = articles.length < 20;
     } else {
         //Category fetch
         let query = `?category=${renderType}`;
@@ -276,10 +275,7 @@ async function renderArticles(auth, refresh = false) {
         }
 
         //TODO: render category
-        const {
-            data: { articles: categoryArticles, endOfFeed },
-            error,
-        } = await getCategoryArticleAPI(token, query);
+        const { data, error } = await getCategoryArticleAPI(token, query);
 
         if (error) {
             await toastBaker({ icon: 'error', text: '系統異常，無法載入最新文章，請稍後再試' });
@@ -287,8 +283,8 @@ async function renderArticles(auth, refresh = false) {
             return { end: '' };
         }
 
-        articles = categoryArticles;
-        end = endOfFeed;
+        articles = data;
+        end = articles.length < 20;
     }
 
     loadingIcon.style.display = 'none';
