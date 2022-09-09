@@ -8,11 +8,6 @@ use App\Http\Requests\GetArticlesRequest;
 use App\Http\Resources\ArticleListResource;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(
-    title: 'Auth',
-    description: 'api for user register and user login',
-    version: '1.0'
-)]
 class ArticleController extends Controller
 {
     #[OA\Get(

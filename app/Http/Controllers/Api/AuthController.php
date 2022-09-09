@@ -10,11 +10,7 @@ use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use OpenApi\Attributes as OA;
 
-#[OA\Info(
-    title: 'Auth',
-    description: 'api for user register and user login',
-    version: '1.0'
-)]
+
 class AuthController extends Controller
 {
     #[OA\Post(
