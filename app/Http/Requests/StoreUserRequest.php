@@ -28,7 +28,7 @@ class StoreUserRequest extends FormRequest
             'password_confirmation',
         ], 
         properties: [
-            new OA\Property(property: '', description: 'user name', type: 'string'),
+            new OA\Property(property: 'name', description: 'user name', type: 'string'),
             new OA\Property(property: 'email', description: 'Verified email', type: 'string', example: 'test-user@test.com'),
             new OA\Property(property: 'password', description: 'string password', type: 'string', example: 'password12345678'),
             new OA\Property(property: 'password_confirmation', description: 'repeated password for confirmation', type: 'string'),

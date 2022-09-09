@@ -5,18 +5,48 @@ namespace App\Http\Controllers\Api;
 use App\Services\ArticleService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\GetArticlesRequest;
-use App\Http\Resources\ArticleCollection;
-use App\Http\Resources\ArticleResource;
+use App\Http\Resources\ArticleListResource;
+use OpenApi\Attributes as OA;
 
+#[OA\Info(
+    title: 'Auth',
+    description: 'api for user register and user login',
+    version: '1.0'
+)]
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    #[OA\Get(
+        path: '/api/articles',
+        tags: ['articles'],
+        summary: 'Fetch latest or category articles',
+        parameters:[
+            new OA\Parameter(name: 'lastArticleId', description: 'id of last article in previous fetch', in: 'query', required: false, example: 1),
+            new OA\Parameter(name: 'category', description: 'category of the article', in: 'query', required: false, example: 'ACG'),
+        ], 
+        responses:[
+            new OA\Response(
+                response: 200,
+                description: 'success', 
+                content: [
+                    new OA\MediaType(
+                        mediaType: 'application/json',
+                        schema: new OA\Schema(
+                            properties: [
+                                new OA\Property(
+                                    property: 'data',
+                                    type: 'array',
+                                    items: new OA\Items(ref: '#/components/schemas/ArticleListResource'),
+                                )
+                            ]
+                        )
+                    )
+                ]
+            )
+        ]
+    )]
     public function index(GetArticlesRequest $request, ArticleService $service)
     {
+
         // TODO: query params: lastArticleId, category
         $validatedFields = $request->validated();
         $lastArticleId = isset($validatedFields['lastArticleId']) ? $validatedFields['lastArticleId'] : PHP_INT_MAX;
@@ -27,7 +57,7 @@ class ArticleController extends Controller
             $articles = $service->getLatestArticles($lastArticleId);
         }
 
-        return ArticleResource::collection($articles)
+        return ArticleListResource::collection($articles)
                 ->response()
                 ->setStatusCode(200);
     }

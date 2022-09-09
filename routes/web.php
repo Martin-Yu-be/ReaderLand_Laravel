@@ -24,7 +24,8 @@ Route::get('/doc', function(){
         $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Requests/AuthUserRequest.php',
         $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Requests/StoreUserRequest.php',
         $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Resources/UserResource.php',
-        $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Controllers/Api/AuthController.php',
+        // $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Controllers/Api/AuthController.php',
+        $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Controllers/Api/ArticleController.php',
     ]);
 
     header('Content-Type: application/json');
