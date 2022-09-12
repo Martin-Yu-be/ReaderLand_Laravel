@@ -1,0 +1,194 @@
+openapi: 3.0.0
+info:
+  title: ReaderLand_Laravel
+  description: 'api doc for ReaderLand_Laravel Project'
+  version: '1.0'
+paths:
+  /api/articles:
+    get:
+      tags:
+        - articles
+      summary: 'Fetch latest or category articles'
+      operationId: 93ded9e31119e6bbb22455c72ef97f19
+      parameters:
+        -
+          name: lastArticleId
+          in: query
+          description: 'id of last article in previous fetch'
+          required: false
+          example: 1
+        -
+          name: category
+          in: query
+          description: 'category of the article'
+          required: false
+          example: ACG
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { type: array, items: { $ref: '#/components/schemas/ArticleListResource' } }
+                type: object
+  /api/auth/login:
+    post:
+      tags:
+        - auth
+      summary: 'user sign in'
+      operationId: dd51a484b7fa0f97c7680fdbde14cf5f
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignInRequest'
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { properties: { accessToken: { description: token, type: string, example: session-token }, user: { $ref: '#/components/schemas/UserResource' } }, type: object }
+                type: object
+  /api/auth/register:
+    post:
+      tags:
+        - auth
+      summary: 'user register'
+      operationId: c7bb21a0d87049e161b8e4c9b0d909f2
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StoreUserRequest'
+      responses:
+        '201':
+          description: success
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { properties: { user: { $ref: '#/components/schemas/UserResource' }, token: { description: 'JWT token', type: string } }, type: object }
+                type: object
+components:
+  schemas:
+    SignInRequest:
+      required:
+        - email
+        - password
+      properties:
+        email:
+          description: 'Verified email'
+          type: string
+          example: test-user@test.com
+        password:
+          description: 'bcrypted password'
+          type: string
+          example: $2y$10$Wrs0PCxnnNzO59SMkaTY9.uVhtHwz62D.7czVVUZ8AK7LLZ2p7w0i
+      type: object
+    StoreUserRequest:
+      required:
+        - name
+        - email
+        - password
+        - password_confirmation
+      properties:
+        name:
+          description: 'user name'
+          type: string
+        email:
+          description: 'Verified email'
+          type: string
+          example: test-user@test.com
+        password:
+          description: 'string password'
+          type: string
+          example: password12345678
+        password_confirmation:
+          description: 'repeated password for confirmation'
+          type: string
+      type: object
+    ArticleListResource:
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: 比時光更寶貴的，原來是陽光！
+        preview:
+          description: 'a short preview of the article'
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-09-06T05:07:37.000000Z'
+        readCount:
+          type: integer
+          example: '100'
+        likeCount:
+          type: integer
+          example: '65'
+        commentCount:
+          type: integer
+          example: '36'
+        liked:
+          type: boolean
+        favorite:
+          type: boolean
+        commented:
+          type: boolean
+        categories:
+          type: array
+          items:
+            type: string
+            enum:
+              - 政治與評論
+              - 國際時事
+              - 電影戲劇
+              - 投資理財
+        author:
+          properties:
+            userId:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: 釀電影
+            picture:
+              description: "Url of the user's avatar"
+              type: string
+              example: 'https://reader-land.s3.ap-northeast-1.amazonaws.com/avatar/M觀點.jpg'
+            bio:
+              type: string
+            followed:
+              type: boolean
+          type: object
+      type: object
+    UserResource:
+      properties:
+        id:
+          description: 'user id'
+          type: integer
+          example: '1'
+        name:
+          description: 'user name'
+          type: string
+        email:
+          description: 'user verified email'
+          type: string
+          example: test@test.com
+        avatar:
+          description: 'user avatar image url'
+          type: string
+        updated_at:
+          description: ''
+          type: 'profiled last updated datetime'
+        created_at:
+          description: 'account created datetime'
+          type: string
+      type: object
