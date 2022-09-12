@@ -19,22 +19,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             \Database\Seeders\CategorySeeder::class,
+            \Database\Seeders\AuthorSeeder::class,
         ]);
 
 
         //TODO: Decode json data
         $json = file_get_contents(__DIR__.'/testcase.json');
         ["authors" => $authors, 'articles' => $articles] = json_decode($json, true);
-
-        
-        //TODO: Seed Authors info into users table
-        foreach($authors as $key => $author){
-            User::create([
-                'email' => 'author_'.$key.'@ReaderLand.com',
-                'password' => bcrypt('password'),
-                ...$author,
-            ]);
-        }
         
         $users = User::all();
         foreach($users as $user){
