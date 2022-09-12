@@ -12,7 +12,9 @@ class DatabaseSeeder extends Seeder
             \Database\Seeders\CategorySeeder::class,
             \Database\Seeders\UserSeeder::class,
             \Database\Seeders\ArticleSeeder::class,
-            \Database\Seeders\ArticleCategorySeeder::class,
+            // \Database\Seeders\ArticleCategorySeeder::class
         ]);
+
+        $this->call(\Database\Seeders\ArticleCategorySeeder::class, false, ['categoryId' => 2]);
     }
 }
