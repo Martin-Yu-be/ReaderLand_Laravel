@@ -22,11 +22,11 @@ use App\Http\Controllers\Api\CategoryController;
 // });
 
 
-Route::middleware(['ForceJson'])->group(function(){
+Route::middleware(['ForceJson'])->as('api.')->group(function(){
 
-    Route::prefix('auth')->group(function(){
-        Route::post('register', [AuthController::class, 'register']);
-        Route::post('login', [AuthController::class, 'login']);
+    Route::prefix('auth')->as('auth.')->group(function(){
+        Route::post('register', [AuthController::class, 'register'])->name('register');
+        Route::post('login', [AuthController::class, 'login'])->name('login');
     });
 
     Route::apiResource('categories', CategoryController::class)
