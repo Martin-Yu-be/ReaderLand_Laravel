@@ -93,6 +93,7 @@ class ArticleSeeder extends Seeder
         $articles = Article::all(['id', 'title']);
         $articles->each(function($article) use($title_categories, $category_id) {
             ['title' => $title] = $article;
+            
             $categoryIdArr = array_map(function($catElem) use($category_id){
                 return $category_id[$catElem];
             }, $title_categories[$title]);
