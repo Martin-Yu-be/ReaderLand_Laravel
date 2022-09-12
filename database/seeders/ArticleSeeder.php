@@ -27,13 +27,22 @@ class ArticleSeeder extends Seeder
         for($i = 0; $i < count($articles); $i++){
             $articles[$i]['head'] = '0';
 
-            // Processing Context
+            //TODO: Processing Context
             $contextArr = explode('||', $articles[$i]['context']);
+            // context example:
+            // "This is paragraph 1.||This is paragraph 2.||This is paragraph 3."
+
+            // Processing context string to json form string
             $contextJson = array();
-            foreach($contextArr as $key => $content){
-                $next = $key == count($contextArr) - 1 ? null: (string) ($key+1);
-                $contextJson[(string) $key] = [
-                    'content' => $content,
+            for($contextIdx = 0; $contextIdx < count($contextArr); $contextIdx++){
+                if($contextIdx === count($contextArr) - 1){  // last paragraph doesn't have next paragraph
+                    $next = null;
+                } else {
+                    $next = (string) ($contextIdx+1);
+                }
+
+                $contextJson[(string) $contextIdx] = [
+                    'content' => $contextArr[$contextIdx],
                     'type' => 'string',
                     'next' => $next
                 ];
