@@ -34,20 +34,6 @@ Route::middleware(['ForceJson'])->as('api.')->group(function(){
 
     Route::apiResource('articles', ArticleController::class)
         ->only('index');
-
-    Route::get('/doc', function(){
-        $openapi = \OpenApi\Generator::scan([
-            $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Requests/AuthUserRequest.php',
-            $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Requests/StoreUserRequest.php',
-            $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Resources/UserResource.php',
-            $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Resources/ArticleListResource.php',
-            $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Controllers/Api/ArticleController.php',
-            $_SERVER['DOCUMENT_ROOT'].'/../app/Http/Controllers/Api/AuthController.php',
-        ]);
-    
-        header('Content-Type: application/json');
-        return $openapi->toJson();
-    });
 });
 
 
