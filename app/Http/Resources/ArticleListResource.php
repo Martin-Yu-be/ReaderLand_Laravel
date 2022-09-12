@@ -5,11 +5,6 @@ namespace App\Http\Resources;
 use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
-#[\OpenApi\Attributes\Info(
-    title: 'ReaderLand_Laravel',
-    description: 'api doc for ReaderLand_Laravel Project',
-    version: '1.0'
-)]
 class ArticleListResource extends JsonResource
 {
     #[OA\Schema(

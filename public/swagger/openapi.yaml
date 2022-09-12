@@ -192,3 +192,7 @@ components:
           description: 'account created datetime'
           type: string
       type: object
+tags:
+  -
+    name: articles
+    description: 'Everything about api for articles'
