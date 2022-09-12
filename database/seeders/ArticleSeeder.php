@@ -91,7 +91,7 @@ class ArticleSeeder extends Seeder
 
         // TODO: Insert article_categories
         $articles = Article::all(['id', 'title']);
-        $articles->each(function($article) use($title_categories, $category_id) {
+        $articles->each(function(Article $article) use($title_categories, $category_id) {
             ['title' => $title] = $article;
             
             $categoryIdArr = array_map(function($catElem) use($category_id){
