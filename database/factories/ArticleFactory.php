@@ -48,7 +48,7 @@ class ArticleFactory extends Factory
             'title' => fake()->sentence(),
             'context' => json_encode($context),
             'head' => 0,
-            'preview' => fake()->paragraph(3),
+            'preview' => fake()->paragraph(1),
             'read_counts' => 0,
             'like_counts' => 0,
             'comment_counts' => 0,

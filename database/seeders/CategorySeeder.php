@@ -5,10 +5,10 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class CategorySeeder extends Seeder
 {
     public function run()
     {
-        \App\Models\User::factory(20)->create();
+        \App\Models\Category::factory(15)->create();
     }
 }
