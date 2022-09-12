@@ -20,12 +20,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             \Database\Seeders\CategorySeeder::class,
             \Database\Seeders\AuthorSeeder::class,
+            \Database\Seeders\UserSeeder::class,
         ]);
 
 
         //TODO: Decode json data
         $json = file_get_contents(__DIR__.'/testcase.json');
-        ["authors" => $authors, 'articles' => $articles] = json_decode($json, true);
+        ['articles' => $articles] = json_decode($json, true);
         
         $users = User::all();
         foreach($users as $user){
