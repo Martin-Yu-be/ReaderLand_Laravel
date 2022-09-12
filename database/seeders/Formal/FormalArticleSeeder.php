@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders;
+namespace Database\Seeders\Formal;
 
 use App\Models\User;
 use App\Models\Article;
@@ -8,7 +8,7 @@ use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class ArticleSeeder extends Seeder
+class FormalArticleSeeder extends Seeder
 {
     public function run()
     {
